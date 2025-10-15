@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Portfolio — Visual Excellence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-section: #111;
+            --text-primary: #f5f5f5;
+            --text-secondary: #999;
+            --accent: #fff;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 2rem;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section */
+        section {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            max-width: 1400px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .section-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 800px;
+            margin-top: 1rem;
+        }
+
+        /* Content Container */
+        .content-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Dual Phone Layout */
+        .dual-phone-layout {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            align-items: flex-start;
+        }
+
+        .phone-container {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .phone-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .phone-frame {
+            position: relative;
+            background: var(--bg-section);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+        }
+
+        .phone-viewport {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .phone-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .phone-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .phone-slide img,
+        .phone-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .phone-slide::after {
+            content: '⤢';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .phone-slide:hover::after {
+            opacity: 0.9;
+        }
+
+        /* Phone Navigation */
+        .phone-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            z-index: 10;
+            font-size: 1.25rem;
+            border-radius: 50%;
+        }
+
+        .phone-nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .phone-nav.prev {
+            left: 0.5rem;
+        }
+
+        .phone-nav.next {
+            right: 0.5rem;
+        }
+
+        .phone-nav.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Phone Indicators */
+        .phone-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--accent);
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 95vw;
+            max-height: 95vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content img,
+        .lightbox-content video {
+            max-width: 100%;
+            max-height: 95vh;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2.5rem;
+            color: var(--accent);
+            cursor: pointer;
+            z-index: 10000;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 2rem;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lightbox-nav.prev {
+            left: 2rem;
+        }
+
+        .lightbox-nav.next {
+            right: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dual-phone-layout {
+                gap: 2rem;
+            }
+
+            .phone-container {
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dual-phone-layout {
+                flex-direction: column;
+                align-items: center;
+                gap: 3rem;
+            }
+
+            .phone-container {
+                max-width: 100%;
+                width: 90%;
+            }
+
+            nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            section {
+                padding: 4rem 1rem;
+            }
+
+            .lightbox-close {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .lightbox-nav {
+                width: 50px;
+                height: 50px;
+            }
+
+            .lightbox-nav.prev {
+                left: 1rem;
+            }
+
+            .lightbox-nav.next {
+                right: 1rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">×</div>
+        <div class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</div>
+        <div class="lightbox-content" id="lightbox-content"></div>
+        <div class="lightbox-nav next" onclick="navigateLightbox(1)">›</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#hero">Home</a>
+        <a href="#reel1">Reels</a>
+        <a href="#model-integration">Projects</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero" id="hero">
+        <h1>Visual Excellence</h1>
+        <p>A showcase of creative and technical mastery through generative content</p>
+    </div>
+
+    <!-- Reel 1 -->
+    <section id="reel1">
+        <div class="section-header">
+            <h2 class="section-title">Reel 1</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Transforming static photography into dynamic motion, breathing life into still imagery with cinematic movement.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel1-original">
+                                <div class="phone-slide" data-type="image" data-src="reel1/frames/C5iKX3oMlyW_1.jpg">
+                                    <img src="reel1/frames/C5iKX3oMlyW_1.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel1/frames/C5iKX3oMlyW_2.jpg">
+                                    <img src="reel1/frames/C5iKX3oMlyW_2.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel1/frames/C5iKX3oMlyW_4.jpg">
+                                    <img src="reel1/frames/C5iKX3oMlyW_4.jpg" alt="Original 3" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel1-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel1-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel1-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel1-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel1/kling_20251008_Image_to_Video_Maintain_a_14_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel1/kling_20251008_Image_to_Video_Maintain_a_14_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel1/kling_20251008_Image_to_Video_Maintain_a_3_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel1/kling_20251008_Image_to_Video_Maintain_a_3_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel1-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel1-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel1-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 2 -->
+    <section id="reel2">
+        <div class="section-header">
+            <h2 class="section-title">Reel 2</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Creating dynamic camera movements and cinematic transitions from static photographs.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel2-original">
+                                <div class="phone-slide" data-type="image" data-src="reel2/C2W36nes1Zt.jpg">
+                                    <img src="reel2/C2W36nes1Zt.jpg" alt="Original" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel2-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel2-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel2-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel2-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel2/kling_20251005_Image_to_Video_The_camera_5541_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel2/kling_20251005_Image_to_Video_The_camera_5541_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel2-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel2-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel2-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 3 -->
+    <section id="reel3">
+        <div class="section-header">
+            <h2 class="section-title">Reel 3</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Multiple motion interpretations from the same source, exploring diverse creative directions.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel3-original">
+                                <div class="phone-slide" data-type="image" data-src="reel3/Cy2jjpRMBe7_1.jpg">
+                                    <img src="reel3/Cy2jjpRMBe7_1.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel3/Cy2jjpRMBe7_2.jpg">
+                                    <img src="reel3/Cy2jjpRMBe7_2.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel3/Cy2jjpRMBe7_3.jpg">
+                                    <img src="reel3/Cy2jjpRMBe7_3.jpg" alt="Original 3" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel3-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel3-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel3-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel3-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel3/kling_20251004_Image_to_Video_Maintain_a_4737_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel3/kling_20251004_Image_to_Video_Maintain_a_4737_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel3/kling_20251005_Image_to_Video__269_0.mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel3/kling_20251005_Image_to_Video__269_0.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel3-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel3-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel3-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 4 -->
+    <section id="reel4">
+        <div class="section-header">
+            <h2 class="section-title">Reel 4</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Building cohesive visual narratives with sequential motion, perfect for brand storytelling.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel4-original">
+                                <div class="phone-slide" data-type="image" data-src="reel4/C2UCZBToZJi_1.jpg">
+                                    <img src="reel4/C2UCZBToZJi_1.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel4/C2UCZBToZJi_2.jpg">
+                                    <img src="reel4/C2UCZBToZJi_2.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel4/C2UCZBToZJi_3.jpg">
+                                    <img src="reel4/C2UCZBToZJi_3.jpg" alt="Original 3" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel4-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel4-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel4-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel4-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel4/kling_20251007_Image_to_Video_Maintain_a_5684_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel4/kling_20251007_Image_to_Video_Maintain_a_5684_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel4/kling_20251007_Image_to_Video_Maintain_a_5696_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel4/kling_20251007_Image_to_Video_Maintain_a_5696_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel4/kling_20251007_Image_to_Video_Maintain_a_5703_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel4/kling_20251007_Image_to_Video_Maintain_a_5703_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel4-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel4-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel4-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 5 -->
+    <section id="reel5">
+        <div class="section-header">
+            <h2 class="section-title">Reel 5</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Maintaining premium quality and aesthetic integrity in motion content for luxury brands.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel5-original">
+                                <div class="phone-slide" data-type="image" data-src="reel5/frames/C4nMnxSL38V_2.jpg">
+                                    <img src="reel5/frames/C4nMnxSL38V_2.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel5/frames/C4nMnxSL38V_3.jpg">
+                                    <img src="reel5/frames/C4nMnxSL38V_3.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel5-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel5-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel5-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel5-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel5/kling_20251007_Image_to_Video_Maintain_a_6051_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel5/kling_20251007_Image_to_Video_Maintain_a_6051_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel5-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel5-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel5-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 6 -->
+    <section id="reel6">
+        <div class="section-header">
+            <h2 class="section-title">Reel 6</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Professional-grade cinematic sequences with sophisticated motion dynamics and timing.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel6-original">
+                                <div class="phone-slide" data-type="image" data-src="reel6/C7-4EpjIDEW_1.jpg">
+                                    <img src="reel6/C7-4EpjIDEW_1.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel6/C7-4EpjIDEW_2.jpg">
+                                    <img src="reel6/C7-4EpjIDEW_2.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel6/C7-4EpjIDEW_3.jpg">
+                                    <img src="reel6/C7-4EpjIDEW_3.jpg" alt="Original 3" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel6-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel6-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel6-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel6-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel6/kling_20251007_Image_to_Video_Maintain_a_5829_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel6/kling_20251007_Image_to_Video_Maintain_a_5829_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel6/kling_20251007_Image_to_Video_Maintain_a_5836_0 (1).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel6/kling_20251007_Image_to_Video_Maintain_a_5836_0 (1).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel6-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel6-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel6-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 7 -->
+    <section id="reel7">
+        <div class="section-header">
+            <h2 class="section-title">Reel 7</h2>
+            <div class="section-description">
+                Image-to-Video Generation — Subtle atmospheric motion that enhances mood and emotional depth.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel7-original">
+                                <div class="phone-slide" data-type="image" data-src="reel7/C_Kh-H6ouu3_1.jpg">
+                                    <img src="reel7/C_Kh-H6ouu3_1.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel7/C_Kh-H6ouu3_2.jpg">
+                                    <img src="reel7/C_Kh-H6ouu3_2.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel7-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel7-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel7-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel7-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel7/kling_20251003_Image_to_Video__5677_0 (2).mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel7/kling_20251003_Image_to_Video__5677_0 (2).mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel7-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel7-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel7-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model Integration -->
+    <section id="model-integration">
+        <div class="section-header">
+            <h2 class="section-title">Model Integration</h2>
+            <div class="section-description">
+                Model and People Integration — Adding models and people seamlessly into existing scenes. This demonstrates our capability to place human subjects into photographs with precise composition, lighting, and environmental integration. Perfect for product campaigns, lifestyle imagery, and brand storytelling that requires human presence.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="model-integration-original">
+                                <div class="phone-slide" data-type="image" data-src="vasca_modella/C_e4sQ7IGnx.jpg">
+                                    <img src="vasca_modella/C_e4sQ7IGnx.jpg" alt="Original Scene" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('model-integration-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('model-integration-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-model-integration-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="model-integration-generated">
+                                <div class="phone-slide" data-type="image" data-src="vasca_modella/Generated Image October 05, 2025 - 4_15PM.png">
+                                    <img src="vasca_modella/Generated Image October 05, 2025 - 4_15PM.png" alt="With Model Added" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="vasca_modella/vlcsnap-2025-10-08-18h26m14s756.png">
+                                    <img src="vasca_modella/vlcsnap-2025-10-08-18h26m14s756.png" alt="With Model Added 2" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('model-integration-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('model-integration-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-model-integration-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reflex Post -->
+    <section id="reflex-post">
+        <div class="section-header">
+            <h2 class="section-title">Reflex Post</h2>
+            <div class="section-description">
+                Multi-Style Image Generation — From a single source photograph, we generate multiple variations maintaining consistent subject identity while exploring diverse styles, backgrounds, lighting scenarios, and artistic interpretations. This showcases our ability to rapidly prototype visual concepts and provide extensive creative options from minimal input.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout">
+                <!-- Original -->
+                <div class="phone-container">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reflex-post-original">
+                                <div class="phone-slide" data-type="image" data-src="reflex_post/originals/C4nMnxSL38V_2.jpg">
+                                    <img src="reflex_post/originals/C4nMnxSL38V_2.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reflex_post/originals/Cy2jjpRMBe7_2.jpg">
+                                    <img src="reflex_post/originals/Cy2jjpRMBe7_2.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reflex_post/originals/C7-4EpjIDEW_2.jpg">
+                                    <img src="reflex_post/originals/C7-4EpjIDEW_2.jpg" alt="Original 3" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reflex-post-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reflex-post-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reflex-post-original"></div>
+                </div>
+
+                <!-- Generated -->
+                <div class="phone-container">
+                    <div class="phone-label">Generated</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reflex-post-generated" id="reflex-track">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reflex-post-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reflex-post-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reflex-post-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reel 8 -->
+    <section id="reel8">
+        <div class="section-header">
+            <h2 class="section-title">Reel 8</h2>
+            <div class="section-description">
+                Complete Creative Pipeline — End-to-end generative workflow demonstrating our full capabilities. From a single source image, we generate multiple stylistic variations (image-to-image), then animate each variation into motion clips (image-to-video). This represents ultimate flexibility for projects requiring extensive asset generation from minimal source material.
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="dual-phone-layout" style="display: flex; justify-content: center; gap: 2rem;">
+                <!-- Original -->
+                <div class="phone-container" style="max-width: 380px;">
+                    <div class="phone-label">Original</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel8-original">
+                                <div class="phone-slide" data-type="image" data-src="reel8/original/BORGHI_bathtub_4.jpg">
+                                    <img src="reel8/original/BORGHI_bathtub_4.jpg" alt="Original 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel8/original/C3hbrhrsmrA.jpg">
+                                    <img src="reel8/original/C3hbrhrsmrA.jpg" alt="Original 2" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel8-original', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel8-original', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel8-original"></div>
+                </div>
+
+                <!-- Generated Frames -->
+                <div class="phone-container" style="max-width: 380px;">
+                    <div class="phone-label">Generated Frames</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel8-frames">
+                                <div class="phone-slide" data-type="image" data-src="reel8/frame generated/1def.png">
+                                    <img src="reel8/frame generated/1def.png" alt="Frame 1" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel8/frame generated/2def.png">
+                                    <img src="reel8/frame generated/2def.png" alt="Frame 2" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel8/frame generated/3def.png">
+                                    <img src="reel8/frame generated/3def.png" alt="Frame 3" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel8/frame generated/4def.png">
+                                    <img src="reel8/frame generated/4def.png" alt="Frame 4" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel8/frame generated/5def.png">
+                                    <img src="reel8/frame generated/5def.png" alt="Frame 5" loading="lazy">
+                                </div>
+                                <div class="phone-slide" data-type="image" data-src="reel8/frame generated/Generated Image October 09, 2025 - 11_51AM.png">
+                                    <img src="reel8/frame generated/Generated Image October 09, 2025 - 11_51AM.png" alt="Frame 6" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel8-frames', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel8-frames', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel8-frames"></div>
+                </div>
+
+                <!-- Generated Videos -->
+                <div class="phone-container" style="max-width: 380px;">
+                    <div class="phone-label">Generated Videos</div>
+                    <div class="phone-frame">
+                        <div class="phone-viewport">
+                            <div class="phone-track" data-track="reel8-generated">
+                                <div class="phone-slide" data-type="video" data-src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5585_0.mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5585_0.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5590_0.mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5590_0.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5591_0.mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5591_0.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="phone-slide" data-type="video" data-src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5595_0.mp4">
+                                    <video autoplay loop muted playsinline preload="metadata">
+                                        <source src="reel8/all clip/kling_20251009_Image_to_Video_Maintain_a_5595_0.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-nav prev" onclick="movePhone('reel8-generated', -1)">‹</div>
+                        <div class="phone-nav next" onclick="movePhone('reel8-generated', 1)">›</div>
+                    </div>
+                    <div class="phone-indicators" id="indicators-reel8-generated"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Creative Excellence — Generative Visual Storytelling</p>
+    </footer>
+
+    <script>
+        // Phone gallery state management
+        const phoneGalleries = {};
+
+        // Initialize all phone galleries
+        function initPhoneGalleries() {
+            document.querySelectorAll('[data-track]').forEach(track => {
+                const trackName = track.dataset.track;
+                const slides = track.querySelectorAll('.phone-slide');
+                const indicatorsContainer = document.getElementById(`indicators-${trackName}`);
+
+                phoneGalleries[trackName] = {
+                    currentIndex: 0,
+                    slides: Array.from(slides),
+                    track: track,
+                    indicators: indicatorsContainer
+                };
+
+                // Create indicators
+                slides.forEach((_, index) => {
+                    const indicator = document.createElement('div');
+                    indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+                    indicator.onclick = () => goToPhone(trackName, index);
+                    indicatorsContainer.appendChild(indicator);
+                });
+
+                // Add click handlers to slides
+                slides.forEach((slide, index) => {
+                    slide.onclick = () => openLightbox(trackName, index);
+                });
+
+                // Update navigation buttons
+                updatePhoneNav(trackName);
+            });
+
+            // Load Reflex Post generated images
+            loadReflexGallery();
+        }
+
+        // Load Reflex Post generated images
+        function loadReflexGallery() {
+            const track = document.getElementById('reflex-track');
+            if (!track) return;
+
+            const generatedImages = [
+                'Generated Image October 08, 2025 - 4_19PM.png',
+                'Generated Image October 08, 2025 - 4_55PM.png',
+                'Generated Image October 08, 2025 - 4_58PM.png',
+                'Generated Image October 08, 2025 - 5_03PM.png',
+                'Generated Image October 08, 2025 - 5_12PM.png',
+                'Generated Image October 08, 2025 - 5_23PM.png',
+                'Generated Image October 08, 2025 - 5_52PM.png',
+                'Generated Image October 08, 2025 - 5_53PM.png',
+                'Generated Image October 08, 2025 - 5_57PM.png',
+                'Generated Image October 08, 2025 - 5_58PM.png',
+                'Generated Image October 08, 2025 - 6_01PM.png',
+                'Generated Image October 08, 2025 - 6_09PM.png',
+                'Generated Image October 08, 2025 - 6_11PM (2).png',
+                'Generated Image October 08, 2025 - 6_14PM.png'
+            ];
+
+            generatedImages.forEach(img => {
+                const slide = document.createElement('div');
+                slide.className = 'phone-slide';
+                slide.dataset.type = 'image';
+                slide.dataset.src = `reflex_post/${img}`;
+                slide.innerHTML = `<img src="reflex_post/${img}" alt="Generated" loading="lazy">`;
+                track.appendChild(slide);
+            });
+
+            // Reinitialize reflex-post-generated gallery
+            const trackName = 'reflex-post-generated';
+            const slides = track.querySelectorAll('.phone-slide');
+            const indicatorsContainer = document.getElementById('indicators-reflex-post-generated');
+            indicatorsContainer.innerHTML = '';
+
+            phoneGalleries[trackName] = {
+                currentIndex: 0,
+                slides: Array.from(slides),
+                track: track,
+                indicators: indicatorsContainer
+            };
+
+            slides.forEach((slide, index) => {
+                const indicator = document.createElement('div');
+                indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+                indicator.onclick = () => goToPhone(trackName, index);
+                indicatorsContainer.appendChild(indicator);
+                slide.onclick = () => openLightbox(trackName, index);
+            });
+
+            updatePhoneNav(trackName);
+        }
+
+        // Move phone gallery
+        function movePhone(trackName, direction) {
+            const gallery = phoneGalleries[trackName];
+            const newIndex = gallery.currentIndex + direction;
+
+            if (newIndex >= 0 && newIndex < gallery.slides.length) {
+                goToPhone(trackName, newIndex);
+            }
+        }
+
+        // Go to specific phone slide
+        function goToPhone(trackName, index) {
+            const gallery = phoneGalleries[trackName];
+            gallery.currentIndex = index;
+
+            const offset = -index * 100;
+            gallery.track.style.transform = `translateX(${offset}%)`;
+
+            // Update indicators
+            const indicators = gallery.indicators.querySelectorAll('.indicator');
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+
+            // Update nav buttons
+            updatePhoneNav(trackName);
+        }
+
+        // Update navigation button states
+        function updatePhoneNav(trackName) {
+            const gallery = phoneGalleries[trackName];
+            const phoneFrame = gallery.track.closest('.phone-frame');
+            const prevBtn = phoneFrame.querySelector('.phone-nav.prev');
+            const nextBtn = phoneFrame.querySelector('.phone-nav.next');
+
+            if (gallery.slides.length <= 1) {
+                prevBtn.classList.add('disabled');
+                nextBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.toggle('disabled', gallery.currentIndex === 0);
+                nextBtn.classList.toggle('disabled', gallery.currentIndex === gallery.slides.length - 1);
+            }
+        }
+
+        // Lightbox functionality
+        let currentLightboxTrack = null;
+        let currentLightboxIndex = 0;
+
+        function openLightbox(trackName, index) {
+            currentLightboxTrack = trackName;
+            currentLightboxIndex = index;
+
+            const gallery = phoneGalleries[trackName];
+            const slide = gallery.slides[index];
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightbox-content');
+
+            content.innerHTML = '';
+
+            if (slide.dataset.type === 'video') {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.playsInline = true;
+                const source = document.createElement('source');
+                source.src = slide.dataset.src;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                content.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = slide.dataset.src;
+                img.alt = 'Full size';
+                content.appendChild(img);
+            }
+
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightbox-content');
+
+            // Stop videos
+            const videos = content.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            if (!currentLightboxTrack) return;
+
+            const gallery = phoneGalleries[currentLightboxTrack];
+            const newIndex = currentLightboxIndex + direction;
+
+            if (newIndex >= 0 && newIndex < gallery.slides.length) {
+                openLightbox(currentLightboxTrack, newIndex);
+            }
+        }
+
+        // Close lightbox with escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        // Close lightbox when clicking outside content
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initPhoneGalleries();
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
